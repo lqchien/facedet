@@ -26,7 +26,6 @@ def init_firebase_cloud():
     cred = st.secrets["firebase"]['my_project_settings']
 #    firebase_key = json.loads(os.getenv('FIREBASE_KEY'))
 #    cred = credentials.Certificate(firebase_key)
-#    cred = credentials.Certificate("firebase/serviceAccountKey.json")
     try:
         firebase_admin.get_app()
     except ValueError:
