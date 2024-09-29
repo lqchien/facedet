@@ -12,6 +12,8 @@ db, bucket = init_firebase_cloud()
 # Streamlit App Title
 st.title("Face Detection App with Firebase")
 
+face_id_counter = 0
+
 # Upload Image
 uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "jpeg", "png"])
 
