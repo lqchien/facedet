@@ -24,7 +24,9 @@ def init_firebase_local():
 # https://www.youtube.com/watch?v=qAYqdg9UICc&ab_channel=TechnicalRajni
 def init_firebase_cloud():
     firebase_credentials = st.secrets["FIREBASE_KEY"]
+    print(firebase_credentials)
     cred = credentials.Certificate(firebase_credentials)
+    print(cred)
     try:
         firebase_admin.get_app()
     except ValueError:
