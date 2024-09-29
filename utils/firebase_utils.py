@@ -23,16 +23,13 @@ def init_firebase_local():
 # Initialize Firebase Admin SDK
 # https://www.youtube.com/watch?v=qAYqdg9UICc&ab_channel=TechnicalRajni
 def init_firebase_cloud():
-#    firebase_key = st.secrets["FIREBASE_KEY"]
-#    firebase_key = json.loads(decrypt(os.environ.get(("FIREBASE_KEY"))))
-#    firebase_key = json.loads(os.getenv('FIREBASE_KEY'))
-#    cred = credentials.Certificate(firebase_key)
-    cred = credentials.Certificate(os.getenv('FIREBASE_KEY'))
+    firebase_credentials = st.secrets["FIREBASE_KEY"]
+    cred = credentials.Certificate(firebase_credentials)
     try:
         firebase_admin.get_app()
     except ValueError:
         firebase_admin.initialize_app(cred, {
-            'storageBucket': 'face-detection-20240930.appspot.com'  # Replace with your project ID
+            'storageBucket': f'{firebase_credentials["project_id"]}.appspot.com'  # Replace with your project ID
         })
 
     # Return Firestore and Storage clients
