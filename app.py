@@ -1,5 +1,6 @@
 import streamlit as st
 import cv2
+from PIL import Image
 import numpy as np
 from datetime import datetime
 from utils.face_detection import detect_faces, crop_face
