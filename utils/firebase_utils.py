@@ -77,20 +77,30 @@ def display_faces_from_firestore():
 
 # Upload image to Firebase Storage
 def upload_image(bucket, img_array, face_id):
-    # Create a temporary file to save the cropped face
-    temp_filename = f"face_{face_id}.jpg"
-    cv2.imwrite(temp_filename, img_array)  # Save the image locally
+    # Convert the OpenCV image to JPEG format
+    _, image_encoded = cv2.imencode('.jpg', img_array)
+    
+#    # Save the image in Firebase Storage
+#    blob = bucket.blob(f"faces_{face_id}.jpg")
+    
+    
+    
+#    # Create a temporary file to save the cropped face
+#    temp_filename = f"face_{face_id}.jpg"
+#    cv2.imwrite(temp_filename, img_array)  # Save the image locally
 
     # Upload the cropped face to Firebase Storage
-    blob = bucket.blob(f"faces/{temp_filename}")
-    blob.upload_from_filename(temp_filename)
+    blob = bucket.blob(f"faces/face_{face_id}.jpg")
+#    blob.upload_from_filename(temp_filename)
+    # Upload the image directly from the encoded bytes
+    blob.upload_from_string(image_encoded.tobytes(), content_type="image/jpeg")
 
     # Get the URL of the uploaded file
     blob.make_public()
     img_url = blob.public_url
 
-    # Remove the local file after uploading
-    os.remove(temp_filename)
+#    # Remove the local file after uploading
+#    os.remove(temp_filename)
 
     return img_url
 
