@@ -23,7 +23,8 @@ def init_firebase_local():
 # Initialize Firebase Admin SDK
 # https://www.youtube.com/watch?v=qAYqdg9UICc&ab_channel=TechnicalRajni
 def init_firebase_cloud():
-    firebase_credentials = st.secrets["FIREBASE_KEY"]
+    # Retrieve Firebase credentials from Streamlit secrets and make a copy
+    firebase_credentials = dict(st.secrets["FIREBASE_KEY"])
     
     # Fix the private key formatting by replacing '\\n' with '\n'
     firebase_credentials["private_key"] = firebase_credentials["private_key"].replace("\\n", "\n")
