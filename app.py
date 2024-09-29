@@ -8,32 +8,33 @@ from utils.firebase_utils import init_firebase_cloud, add_face_data, upload_imag
 # Initialize Firebase
 db, bucket = init_firebase_cloud()
 
-st.title("Face Detection App with Streamlit and Firebase")
+# Streamlit App Title
+st.title("Face Detection App with Firebase")
 
-# Webcam capture using Streamlit
-FRAME_WINDOW = st.image([])
-run = st.checkbox("Start Webcam")
+# Upload Image
+uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "jpeg", "png"])
 
-if run:
-    video_capture = cv2.VideoCapture(0)
-    face_id_counter = 0  # Unique face ID counter
+# If an image is uploaded
+if uploaded_file is not None:
+    # Convert the uploaded image to an OpenCV image
+    image = np.array(Image.open(uploaded_file))
 
-    while run:
-        ret, frame = video_capture.read()
-        if not ret:
-            st.error("Failed to read from webcam.")
-            break
+    # Display the uploaded image
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    
+    # Add a "Detect" button
+    if st.button("Detect"):
 
-        # Detect faces in the frame
-        faces = detect_faces(frame)
-
+        # Step 2: Detect Faces in the Uploaded Image
+        faces = detect_faces(image)
+        
         # Loop through detected faces, crop and upload each one
         for (x, y, w, h) in faces:
             face_id = f"{face_id_counter}"
             face_id_counter += 1
 
             # Crop the face
-            cropped_face = crop_face(frame, x, y, w, h)
+            cropped_face = crop_face(image, x, y, w, h)
 
             # Upload the cropped face image to Firebase
             img_url = upload_image(bucket, cropped_face, face_id)
@@ -41,15 +42,30 @@ if run:
             # Store face metadata in Firestore
             add_face_data(db, face_id, img_url)
 
-            # Draw a rectangle around the face on the main frame
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
+            # Draw a rectangle around the face on the main image
+            cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        
         # Convert the image from BGR (OpenCV format) to RGB (for Streamlit)
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        FRAME_WINDOW.image(frame)
-
-    video_capture.release()
-
-else:
-    st.write("Click the checkbox to start the webcam.")
+#        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#        FRAME_WINDOW.image(frame)
+        st.image(image, caption="Image with Detected Faces", use_column_width=True)
+    
+#    # If faces are detected
+#    if len(faces) > 0:
+#        st.success(f"Detected {len(faces)} face(s).")
+#        
+#        # Draw rectangles around the detected faces
+#        for (x, y, w, h) in faces:
+#            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+#        
+#        # Display the image with detected faces
+#        st.image(image, caption="Image with Detected Faces", use_column_width=True)
+#        
+#        # Save each detected face to Firebase
+#        for i, (x, y, w, h) in enumerate(faces):
+#            cropped_face = image[y:y+h, x:x+w]
+#            store_face_to_firebase(cropped_face, f"face_{i}")
+        
+    else:
+        st.warning("No faces detected.")
 
