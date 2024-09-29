@@ -24,6 +24,7 @@ def init_firebase_local():
 # https://www.youtube.com/watch?v=qAYqdg9UICc&ab_channel=TechnicalRajni
 def init_firebase_cloud():
     firebase_key = st.secrets["FIREBASE_KEY"]
+#    firebase_key = json.loads(decrypt(os.environ.get(("FIREBASE_KEY"))))
 #    firebase_key = json.loads(os.getenv('FIREBASE_KEY'))
     cred = credentials.Certificate(firebase_key)
     try:
