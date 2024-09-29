@@ -39,8 +39,8 @@ if uploaded_file is not None:
             # Crop the face
             cropped_face = crop_face(image, x, y, w, h)
 
-            # Upload the cropped face image to Firebase
-            img_url = upload_image(bucket, cropped_face, face_id)
+#            # Upload the cropped face image to Firebase
+#            img_url = upload_image(bucket, cropped_face, face_id)
 
 #            # Store face metadata in Firestore
 #            add_face_data(db, face_id, img_url)
