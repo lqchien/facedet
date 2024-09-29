@@ -23,8 +23,9 @@ def init_firebase_local():
 # Initialize Firebase Admin SDK
 # https://www.youtube.com/watch?v=qAYqdg9UICc&ab_channel=TechnicalRajni
 def init_firebase_cloud():
-    firebase_key = json.loads(os.getenv('FIREBASE_KEY'))
-    cred = credentials.Certificate(firebase_key)
+    cred = st.secrets["firebase"]['my_project_settings']
+#    firebase_key = json.loads(os.getenv('FIREBASE_KEY'))
+#    cred = credentials.Certificate(firebase_key)
 #    cred = credentials.Certificate("firebase/serviceAccountKey.json")
     try:
         firebase_admin.get_app()
