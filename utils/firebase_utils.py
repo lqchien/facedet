@@ -27,9 +27,20 @@ def init_firebase_cloud():
     firebase_credentials = dict(st.secrets["FIREBASE_KEY"])
     
     # Fix the private key formatting by replacing '\\n' with '\n'
-    firebase_credentials["private_key"] = firebase_credentials["private_key"].replace("\\n", "\n")
+    #firebase_credentials["private_key"] = firebase_credentials["private_key"].replace("\\n", "\n")
     
-    cred = credentials.Certificate(firebase_credentials)
+    #cred = credentials.Certificate(firebase_credentials)
+    cred = credentials.Certificate({"type": firebase_credentials["type"],
+    "project_id": firebase_credentials["project_id"],
+    "private_key_id": firebase_credentials["private_key_id"],
+    "private_key": firebase_credentials["private_key"].replace("\\n", "\n"),  # Ensure newlines are handled
+    "client_email": firebase_credentials["client_email"],
+    "client_id": firebase_credentials["client_id"],
+    "auth_uri": firebase_credentials["auth_uri"],
+    "token_uri": firebase_credentials["token_uri"],
+    "auth_provider_x509_cert_url": firebase_credentials["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": firebase_credentials["client_x509_cert_url"],
+    "universe_domain": firebase_credentials["universe_domain"]})
 
     try:
         firebase_admin.get_app()

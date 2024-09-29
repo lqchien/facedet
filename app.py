@@ -52,23 +52,7 @@ if uploaded_file is not None:
 #        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 #        FRAME_WINDOW.image(frame)
         st.image(image, caption="Image with Detected Faces", use_column_width=True)
-    
-#    # If faces are detected
-#    if len(faces) > 0:
-#        st.success(f"Detected {len(faces)} face(s).")
-#        
-#        # Draw rectangles around the detected faces
-#        for (x, y, w, h) in faces:
-#            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-#        
-#        # Display the image with detected faces
-#        st.image(image, caption="Image with Detected Faces", use_column_width=True)
-#        
-#        # Save each detected face to Firebase
-#        for i, (x, y, w, h) in enumerate(faces):
-#            cropped_face = image[y:y+h, x:x+w]
-#            store_face_to_firebase(cropped_face, f"face_{i}")
-        
+
     else:
         st.warning("No faces detected.")
 
