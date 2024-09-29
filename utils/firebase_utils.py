@@ -24,9 +24,12 @@ def init_firebase_local():
 # https://www.youtube.com/watch?v=qAYqdg9UICc&ab_channel=TechnicalRajni
 def init_firebase_cloud():
     firebase_credentials = st.secrets["FIREBASE_KEY"]
-    print(firebase_credentials)
+    
+    # Fix the private key formatting by replacing '\\n' with '\n'
+    firebase_credentials["private_key"] = firebase_credentials["private_key"].replace("\\n", "\n")
+    
     cred = credentials.Certificate(firebase_credentials)
-    print(cred)
+
     try:
         firebase_admin.get_app()
     except ValueError:
